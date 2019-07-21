@@ -1,5 +1,8 @@
 <script>
-	export let name;
+	import MultiForm from "./MultiForm.svelte";
+	import FormPanel from "./FormPanel.svelte";
+	
+	export let name = "";
 </script>
 
 <style>
@@ -8,4 +11,17 @@
 	}
 </style>
 
-<h1>Hello {name}!</h1>
+<h1>Budget App</h1>
+<div>
+<MultiForm first={0} last={2} current={0}>
+	<FormPanel index={0}>
+		<div>A</div>
+	</FormPanel>
+	<FormPanel index={1}>
+		<div>B</div>
+	</FormPanel>
+	<FormPanel index={2}>
+		<div>C</div>
+	</FormPanel>
+</MultiForm>
+</div>
