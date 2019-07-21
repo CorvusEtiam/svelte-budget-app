@@ -5,3 +5,12 @@ export const controllerState = writable({
     next: false,
     prev: false 
 })
+
+export function format_currency(name, value) {
+    return CURRENCY[name].format.replace("{}", value);
+}
+
+export const CURRENCY = {
+    "PLN" : { name: "złoty", format: "{} zł" },
+    "USD" : { name: "dollar", format: "${}" }
+}
