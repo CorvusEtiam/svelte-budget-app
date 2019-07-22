@@ -6,10 +6,6 @@
     export let last;
     export let current = 0; 
 
-    onMount(() => {
-        $controllerState.current = current;
-    })
-
     $: previous_active = ($controllerState.current > first) && !$controllerState.prev;
     $: next_active = ($controllerState.current < last) && !$controllerState.next;
 
@@ -22,7 +18,7 @@
     }
 
 </script>
-<form>
+<div>
     <slot></slot>
     <div class="controller">
     {#if previous_active }
@@ -32,4 +28,4 @@
         <button type="button" on:click={next_panel}>Next</button>
     {/if}
     </div>
-</form>
+</div>

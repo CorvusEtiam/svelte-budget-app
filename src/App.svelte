@@ -2,8 +2,7 @@
 	import MultiForm from "./MultiForm.svelte";
 	import FormPanel from "./FormPanel.svelte";
 	import PollHeader from "./PollHeader.svelte";
-
-	export let name = "";
+	import PollContent from "./PollContent.svelte";
 </script>
 
 <style>
@@ -19,10 +18,13 @@
 		<PollHeader />
 	</FormPanel>
 	<FormPanel index={1}>
-		<div>B</div>
+		<PollContent />
 	</FormPanel>
 	<FormPanel index={2}>
 		<div>C</div>
 	</FormPanel>
 </MultiForm>
+</div>
+<div>
+<p></p>
 </div>
