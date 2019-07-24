@@ -36,6 +36,4 @@
 </div> 
 {#if state != NONE} 
 <PollInput state={state} on:close={ev =>{ state = NONE; }}></PollInput> 
-{:else}
-<!-- empty -->
 {/if}
