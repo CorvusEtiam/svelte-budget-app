@@ -15,7 +15,7 @@
 
 	let changed = false;
 
-	$: is_filled = ( name !== "" ) && ( amount > 0 ) && (currency !== undefined) && changed;
+	$: is_filled = ( name !== "" ) && ( amount > 0 ) && (currency !== "default");
 
 	function save() {
 		$pollState.poll.name = name;
@@ -31,7 +31,7 @@
 	<input type="text" id="pollName" bind:value={name} required>
 	<label for="pollAmount">Poll Name: </label>
 	<input type="number" id="pollAmount" bind:value={amount} required>
-	<select bind:value={currency} on:change={ ev => { changed = !changed; }  }>
+	<select bind:value={currency}>
 		<option value="default" disabled selected>Select Currency</option>
 		{#each Object.entries(CURRENCY) as entry }
 		<option value={entry[0]}>{ entry[1].name }</option>

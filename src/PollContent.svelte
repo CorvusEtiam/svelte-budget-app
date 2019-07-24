@@ -1,50 +1,41 @@
 <script>
     import { format_currency, pollState, create_person } from "./globals.js";
+    import { ADD, UPDATE, NONE } from "./states.js";
     import PollTable from "./PollTable.svelte";
     import PollInput from "./PollInput.svelte";
 
-    let open = false;
+    $: summary_paid = $pollState.people.reduce((prev, curr) => { return prev + curr.amount }, 0);
 
 
-    function create_or_update(obj) {
-        let { name, amount, currency, timestamp } = obj;
 
-        if ( timestamp == null ) {
-            let people = $pollState.people;
-            people.push(create_person(name, amount));
-
-            $pollState.people = people;  
-            open = false;
-        } else {
-            for ( let i = 0; i < $pollState.people.length; i++ ) {
-                if ( $pollState.people[i].timestamp == timestamp ) {
-                    $pollState.people[i].name = name;
-                    $pollState.people[i].amount = amount;
-                    $pollState.people[i].currency = currency;
-                    $pollState.people[i].selected = false;
-                }
-            }
-            open = false;
-        }
-        
-    }
+    /// possible stated: add, update, none
+    $: state = NONE;
 
 </script>
 <style>
 .error {
     border: 2px solid red;
 }
+.hidden {
+    display: none;
+}
 </style>
+
 <div>
-<h2>Poll: {$pollState.poll.name}</h2>
 <PollTable />
 </div>
+<div>
+    <div>Full amount: { format_currency($pollState.poll.currency, $pollState.poll.amount) } </div>
+    <div>Paid: {format_currency($pollState.poll.currency, summary_paid)} </div>
+    <div>Left: {format_currency($pollState.poll.currency, $pollState.poll.amount - summary_paid)} </div>
+</div>
 <div class="group horizontal">
-    <button type="button" on:click={ev => { console.log(ev.target.innerText); open = true; }}>Add Entry</button>
-    <button type="button" on:click={ev => { console.log(ev.target.innerText); }}>Remove Selected</button>
-    <button type="button" on:click={ev => { console.log(ev.target.innerText); open = true; }}>Update Selected</button>
+    <button type="button" class = "{ summary_paid >= $pollState.poll.amount ? 'hidden' : '' }" on:click={ev => { console.log(ev.target.innerText); state = ADD }}>Add Entry</button>
+    <button type="button" class = "{ $pollState.people.length == 0 ? 'hidden' : '' }" on:click={ev => { console.log(ev.target.innerText); }}>Remove Selected</button>
+    <button type="button" class = "{ $pollState.people.length == 0 ? 'hidden' : '' }" on:click={ev => { console.log(ev.target.innerText); state = UPDATE; }}>Update Selected</button>
 </div> 
-
-{#if open }
-<PollInput on:save={ ev => { console.log("%o", ev); create_or_update(ev.detail) }} currency={$pollState.poll.currency}/>
+{#if state != NONE} 
+<PollInput state={state} on:close={ev =>{ state = NONE; }}></PollInput> 
+{:else}
+<!-- empty -->
 {/if}

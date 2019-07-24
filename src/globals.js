@@ -7,7 +7,9 @@ export const controllerState = writable({
 })
 
 export function format_currency(name, value) {
-    return CURRENCY[name].format.replace("{}", value);
+    let rounded = Math.round(value * 100) / 100;
+
+    return CURRENCY[name].format.replace("{}", rounded);
 }
 
 export const CURRENCY = {
@@ -16,7 +18,9 @@ export const CURRENCY = {
 }
 
 export const pollState = writable({
-    people: [],
+    people: [
+
+    ],
     poll: {
         name: null,
         currency: null,
